@@ -1,3 +1,6 @@
+'use client'
+//import "./globals.css";
+
 import { useState, useEffect } from 'react';
 import useEthereum from '../hooks/useEthereum';
 
@@ -23,8 +26,9 @@ export default function Home() {
   return (
     <div>
       <h1>Vote DApp</h1>
+     
       {!isConnected ? (
-        <p>Connectez votre portefeuille MetaMask</p>
+          <button  >Connect Wallet</button>
       ) : (
         <div>
           <p>Compte connecté : {account}</p>

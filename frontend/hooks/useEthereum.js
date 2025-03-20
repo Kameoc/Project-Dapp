@@ -1,5 +1,8 @@
+'use client'
+
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
+import {abi} from '../constants/constants.js';
 
 export default function useEthereum() {
   const [isConnected, setIsConnected] = useState(false);
