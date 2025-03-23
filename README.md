@@ -92,10 +92,4 @@ npx hardhat test
 - **Ethers.js** : Bibliothèque pour interagir avec Ethereum.
 - **Tailwind CSS** : Framework CSS pour le style.
 
-## Contribution
 
-Les contributions sont les bienvenues ! Veuillez soumettre une pull request ou ouvrir une issue pour toute suggestion ou amélioration.
-
-## Licence
-
-Ce projet est sous licence MIT. Consultez le fichier `LICENSE` pour plus d'informations.
