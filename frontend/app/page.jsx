@@ -2,36 +2,34 @@
 'use client'
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from 'wagmi'
-import {abi} from './abi.ts';
-import { useWriteContract} from "wagmi";
-import { useReadContract } from "wagmi";
-import { useState } from 'react';
-import { readContract, prepareWriteContract, writeContract } from '@wagmi/core'
+import { abi } from './abi.ts';
+import { useWriteContract, useReadContract } from 'wagmi'
+import { useState, useEffect } from 'react';
 
-export default  function Home() {
-  const contractAddress = '0xa513E6E4b8f2a923D98304ec87F64353C4D5C853';
+export default function Home() {
+  const contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
   const { address, isConnected } = useAccount();
-  const [voters, setVoters] = useState([]);
-  const [voterAddress, setVoterAddress] = useState();
-  const {data: workflow} = useReadContract({
-    address: '0xa513E6E4b8f2a923D98304ec87F64353C4D5C853',
+  const [voterAddress, setVoterAddress] = useState('');
+  
+  // Utilisation de useReadContract pour obtenir le workflow
+  const { data: workflow, isLoading: isLoadingWorkflow, isError: isErrorWorkflow } = useReadContract({
+    address: contractAddress,
     abi: abi,
     functionName: "getStatus",
-    chainId: 31337
+    chainId: 31337,
   });
-  const {data: voter} = useReadContract({
-    address: '0xa513E6E4b8f2a923D98304ec87F64353C4D5C853',
-    abi: abi,
-    functionName: "voters",
-    chainId: 31337
-  });
+
+
+
+  // Fonction pour inscrire un votant
+  const { writeContract, isLoading: isPending, error } = useWriteContract();
 
   const startVoterRegistration = async () => {
     try {
-      const { request } =  useWriteContract({
-        address:'0xa513E6E4b8f2a923D98304ec87F64353C4D5C853',
+      const { request } = await writeContract({
+        address: contractAddress,
         abi: abi,
-        functionName: "startVoterRegistration"
+        functionName: "startVoterRegistration",
       });
       console.log("Voter registration started:", request);
     } catch (error) {
@@ -39,48 +37,67 @@ export default  function Home() {
     }
   };
 
-  const registerVoter =  () => {
-    
-      console.log("Preparing to register voter with address:", voterAddress);
-      const { request } =  useWriteContract({
+  const registerVoter =  async() => {
+    if (!voterAddress) {
+      console.error("Voter address is required");
+      return;
+    }
+
+    try {
+      const { request } =  await writeContract({
         address: contractAddress,
         abi: abi,
         functionName: "registerVoter",
         args: [voterAddress],
       });
       console.log("Voter registered:", request);
-
-      
+    } catch (error) {
+      console.error("Error registering voter:", error);
+    }
   };
-
 
   return (
     <div>
       <footer className="row-start-3 flex gap-[24px] justify-center ">
-      <h1>EtherVote</h1>
-       <div className="flex gap-[20px] justify-center,margin [5px]">
-        <p>Current phase : </p>
-        <p className = "state">{workflow}</p>
-       </div>
-      <ConnectButton />
+        <h1>EtherVote</h1>
+        <div className="flex gap-[20px] justify-center,margin [5px]">
+          <p>Current phase : </p>
+          {isLoadingWorkflow ? (
+            <p className = "state">Loading...</p> // Affiche "Loading..." si les données du workflow sont encore en train de charger
+          ) : isErrorWorkflow ? (
+            <p>Error loading workflow status</p> // Affiche une erreur si le statut du workflow n'est pas récupéré correctement
+          ) : (
+            <p className="state">{workflow}</p> // Affiche le workflow quand les données sont chargées
+          )}
+        </div>
+        <ConnectButton />
       </footer>
       <div>
-        <input type="text" placeholder="Copy your account address here !" 
-            onChange={e => setVoterAddress(e.target.value)} />
-        <button onClick={registerVoter()} className="button register">
-          Register
+        <input
+          type="text"
+          placeholder="Copy your account address here!"
+          onChange={(e) => setVoterAddress(e.target.value)}
+        />
+        <button
+          onClick={registerVoter}
+          className="button register"
+          disabled={isPending}
+        >
+          {isPending ? "Registering..." : "Register"}
         </button>
-       <div className ="underDiv"></div>
-        {isConnected ? (
-        <div >
-          <p>Account :  {address}</p>
-         
-        </div>
-      ) : (
-       <p>Please connect your Wallet.</p>
-      )}
-      </div>
 
+        {error && <p>Error registering voter: {error.message}</p>}
+
+        <div className="underDiv"></div>
+
+        {isConnected ? (
+          <div>
+            <p>Account: {address}</p>
+          </div>
+        ) : (
+          <p>Please connect your Wallet.</p>
+        )}
+      </div>
     </div>
- );
+  );
 }

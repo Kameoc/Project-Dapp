@@ -23,7 +23,6 @@ const config: HardhatUserConfig = {
     enabled: true,
   },
   etherscan: {
-    apiKey: ETHERSCAN_API_KEY,
     customChains: [
       {
         network: "localhost",
