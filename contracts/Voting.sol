@@ -72,37 +72,59 @@ contract Voting is Ownable {
     status = WorkflowStatus.ProposalsRegistrationStarted;
 }
 
-function endProposalsRegistration() external onlyOwner {
-    require(status == WorkflowStatus.ProposalsRegistrationStarted, "Cannot end proposals registration now");
-    emit WorkflowStatusChange(status, WorkflowStatus.ProposalsRegistrationEnded);
-    status = WorkflowStatus.ProposalsRegistrationEnded;
-}
-
-function startVotingSession() external onlyOwner {
-    require(status == WorkflowStatus.ProposalsRegistrationEnded, "Cannot start voting session now");
-    emit WorkflowStatusChange(status, WorkflowStatus.VotingSessionStarted);
-    status = WorkflowStatus.VotingSessionStarted;
-}
-
-function endVotingSession() external onlyOwner {
-    require(status == WorkflowStatus.VotingSessionStarted, "Cannot end voting session now");
-    emit WorkflowStatusChange(status, WorkflowStatus.VotingSessionEnded);
-    status = WorkflowStatus.VotingSessionEnded;
-}
-
-function tallyVotes() external onlyOwner {
-    require(status == WorkflowStatus.VotingSessionEnded, "Cannot tally votes now");
-    
-    uint winningVoteCount = 0;
-    for (uint i = 0; i < proposals.length; i++) {
-        if (proposals[i].voteCount > winningVoteCount) {
-            winningVoteCount = proposals[i].voteCount;
-            winningProposalId = i;
-        }
+    function endProposalsRegistration() external onlyOwner {
+        require(status == WorkflowStatus.ProposalsRegistrationStarted, "Cannot end proposals registration now");
+        emit WorkflowStatusChange(status, WorkflowStatus.ProposalsRegistrationEnded);
+        status = WorkflowStatus.ProposalsRegistrationEnded;
     }
 
-    emit WorkflowStatusChange(status, WorkflowStatus.VotesTallied);
-    status = WorkflowStatus.VotesTallied;
-}
+    function startVotingSession() external onlyOwner {
+        require(status == WorkflowStatus.ProposalsRegistrationEnded, "Cannot start voting session now");
+        emit WorkflowStatusChange(status, WorkflowStatus.VotingSessionStarted);
+        status = WorkflowStatus.VotingSessionStarted;
+    }
+
+    function endVotingSession() external onlyOwner {
+        require(status == WorkflowStatus.VotingSessionStarted, "Cannot end voting session now");
+        emit WorkflowStatusChange(status, WorkflowStatus.VotingSessionEnded);
+        status = WorkflowStatus.VotingSessionEnded;
+    }
+
+    function tallyVotes() external onlyOwner {
+        require(status == WorkflowStatus.VotingSessionEnded, "Cannot tally votes now");
+
+        uint winningVoteCount = 0;
+        for (uint i = 0; i < proposals.length; i++) {
+            if (proposals[i].voteCount > winningVoteCount) {
+                winningVoteCount = proposals[i].voteCount;
+                winningProposalId = i;
+            }
+        }
+
+        emit WorkflowStatusChange(status, WorkflowStatus.VotesTallied);
+        status = WorkflowStatus.VotesTallied;
+    }
+
+    function getWinner() external view returns (string memory description) {
+        require(status == WorkflowStatus.VotesTallied, "Votes have not been tallied yet");
+        return proposals[winningProposalId].description;
+    }
+
+    function getStatus() external view returns (string memory statusLabel) {
+        if (status == WorkflowStatus.RegisteringVoters) {
+            return "Registering Voters";
+        } else if (status == WorkflowStatus.ProposalsRegistrationStarted) {
+            return "Registration Started";
+        } else if (status == WorkflowStatus.ProposalsRegistrationEnded) {
+            return "Proposals Registration Ended";
+        } else if (status == WorkflowStatus.VotingSessionStarted) {
+            return"Voting Session Started";
+        } else if (status == WorkflowStatus.VotingSessionEnded) {
+            return "Voting Session Ended";
+        } else if (status == WorkflowStatus.VotesTallied) {
+            return "Votes Tallied";
+        } 
+        return "Inactive";
+    }
 
 }

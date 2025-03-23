@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #13bf72;
-  --foreground: #db2828;
+  --background: #ffffff;
+  --foreground: #171717;
 }
 
 @theme inline {
@@ -14,8 +14,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #181720;
-    --foreground: #97dee0;
+    --background: #111932;
+    --foreground: #ededed;
   }
 }
 
@@ -23,26 +23,96 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  margin:10px;
+  align-content: center;
+  text-align: center;
 }
 
-button{
-  background: #0c54b8;
-  color: #ffffff;
-  border:2px solid #0f0d37;
-  border-radius: 15px ;
-  margin : 10px;
+div{
+  text-align: center;
+}
+
+
+p{
+  color:aquamarine;
+  padding-top:10px;
+  padding-bottom:10px;
+  font-size:20px;
+}
+h1{
+  margin-top:-5px;
+  padding-bottom:10px;
+  font-size:35px;
+  font-weight:bold;
+}
+
+.register{
+  background-color: #4caf75;
+  color: white;
+  padding-top:14px;
+  padding-bottom:14px;
+  margin: 8px 0;
+  margin-top: 20px;
+  border-radius: 15px;
+  border: none;
+  cursor: pointer;
+  width: 100px;
+  text-align: center;
+}
+
+.stopRegister{
+  background-color: #f44336;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
   width: 200px;
-  height: 40px;
+  border-radius: 15px;
 }
 
-button:hover{
-  background: #9dd6e6;
-  color:#0d82db
+.register:hover {
+  opacity: 0.8;
 }
 
-h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0;
-  padding:25px;
+.stopRegister:hover {
+  opacity: 0.8;
+}
+
+.message{
+  height:50px;
+  background-color: rgb(60, 61, 109);
+}
+
+footer{
+  background-color: rgb(60, 61, 109);
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  height:60px;
+  padding:10px;
+  justify-content: space-between;
+  grid-row: 3;
+  flex-direction: row;
+}
+
+.underDiv{
+height:500px;
+}
+
+input[type=text], input[type=password] {
+  background-color: #95a0c0;
+  color:antiquewhite;
+  width: 500px;
+  padding: 10px;
+  margin: 8px ;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 15px;
+}
+
+.state{
+  color:rgb(14, 246, 83)
 }

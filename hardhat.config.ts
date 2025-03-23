@@ -24,6 +24,16 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: ETHERSCAN_API_KEY,
+    customChains: [
+      {
+        network: "localhost",
+        chainId: 31337,
+        urls: {
+          apiURL: "http://127.0.0.1:8545",
+          browserURL: "http://127.0.0.1:8545",
+        },
+      }
+    ]
   },
   solidity: {
     compilers: [
