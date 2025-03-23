@@ -56,7 +56,7 @@ Ce projet est une application décentralisée (DApp) de vote construite avec Sol
 
 1. Clonez le dépôt :
    ```bash
-   git clone <url-du-repo>
+   git clone https://github.com/Kameoc/Project-Dapp.git
    cd Project-Dapp-master
    ```
 
@@ -73,19 +73,12 @@ Ce projet est une application décentralisée (DApp) de vote construite avec Sol
 
 ## Déploiement du contrat
 
-1. Configurez les variables d'environnement dans un fichier `.env` :
-   ```
-   SEPOLIA_RPC_URL=<votre-url-rpc>
-   PRIVATE_KEY=<votre-clé-privée>
-   ETHERSCAN_API_KEY=<votre-clé-api-etherscan>
-   ```
-
-2. Déployez le contrat sur le réseau souhaité :
-   ```bash
-   npx hardhat run ignition/modules/deploy.ts --network sepolia
-   ```
-
-3. Notez l'adresse du contrat déployé et mettez-la à jour dans `frontend/hooks/useEthereum.js`.
+```bash
+npx hardhat node
+npx hardhat run ./ignition/modules/deploy.ts --network localhost
+cd frontend
+npm run dev
+```
 
 ## Lancement de l'application
 
