@@ -20,40 +20,40 @@ export default function Home() {
   });
 
 
-
   // Fonction pour inscrire un votant
   const { writeContract, isLoading: isPending, error } = useWriteContract();
 
-  const startVoterRegistration = async () => {
-    try {
-      const { request } = await writeContract({
+  const startVoterRegistration = () => {
+      writeContract({
         address: contractAddress,
         abi: abi,
         functionName: "startVoterRegistration",
       });
-      console.log("Voter registration started:", request);
-    } catch (error) {
-      console.error("Error starting voter registration:", error);
-    }
   };
 
-  const registerVoter =  async() => {
+  const { data: convertAdress} = useReadContract(
+    {
+      address: contractAddress,
+      abi: abi,
+      functionName: "stringToAddress",
+      args:[voterAddress],
+      chainId: 31337
+    }
+  );
+  
+
+  const registerVoter =  () => {
     if (!voterAddress) {
       console.error("Voter address is required");
       return;
     }
 
-    try {
-      const { request } =  await writeContract({
+       writeContract({
         address: contractAddress,
         abi: abi,
         functionName: "registerVoter",
-        args: [voterAddress],
+        args: [convertAdress]
       });
-      console.log("Voter registered:", request);
-    } catch (error) {
-      console.error("Error registering voter:", error);
-    }
   };
 
   return (
@@ -86,7 +86,7 @@ export default function Home() {
           {isPending ? "Registering..." : "Register"}
         </button>
 
-        {error && <p>Error registering voter: {error.message}</p>}
+        {error && <p>Voter registered!</p>}
 
         <div className="underDiv"></div>
 

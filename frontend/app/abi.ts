@@ -239,6 +239,25 @@ export const abi = [
     "inputs": [
       {
         "internalType": "string",
+        "name": "str",
+        "type": "string"
+      }
+    ],
+    "name": "stringToAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
         "name": "_desc",
         "type": "string"
       }
@@ -323,6 +342,5 @@ export const abi = [
     "stateMutability": "view",
     "type": "function"
   }
-  
   ]
    
