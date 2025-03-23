@@ -91,4 +91,8 @@ npx hardhat test
 - **Ethers.js** : Bibliothèque pour interagir avec Ethereum.
 - **Tailwind CSS** : Framework CSS pour le style.
 
+## Video du frontend
+
+https://drive.google.com/drive/folders/1pDwa0dJBCKk-qcewLDBoeofvfr2Bmx2z?d
+
 
