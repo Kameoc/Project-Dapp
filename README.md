@@ -25,7 +25,6 @@ Ce projet est une application décentralisée (DApp) de vote construite avec Sol
 ├── frontend/           # Application frontend Next.js
 │   ├── app/            # Pages et styles
 │   ├── constants/      # ABI et adresses des contrats
-│   ├── hooks/          # Hooks personnalisés pour Ethereum
 │   └── public/         # Fichiers statiques
 ├── ignition/           # Scripts de déploiement
 ├── test/               # Tests Hardhat
